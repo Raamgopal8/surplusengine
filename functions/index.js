@@ -8,7 +8,7 @@ const db = getFirestore("surplusengine");
 export const matchSurplus = onDocumentCreated({
   document: "surplus/{id}",
   database: "surplusengine",
-  region: "asia-south1"
+  region: "us-central1"
 }, async (event) => {
   const snapshot = event.data;
   if (!snapshot) {
