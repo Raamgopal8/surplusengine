@@ -18,11 +18,20 @@ export default function AddDemand() {
   };
 
   return (
-    <div>
-      <h3>Add Demand</h3>
-      <input placeholder="Item" value={item} onChange={e => setItem(e.target.value)} />
-      <input placeholder="Qty" value={quantity} onChange={e => setQuantity(e.target.value)} />
-      <button onClick={handleSubmit}>Add</button>
+    <div className="form-group">
+      <h3>Request Item</h3>
+      <input 
+        placeholder="What do you need?" 
+        value={item} 
+        onChange={e => setItem(e.target.value)} 
+      />
+      <input 
+        type="number"
+        placeholder="Quantity" 
+        value={quantity} 
+        onChange={e => setQuantity(e.target.value)} 
+      />
+      <button onClick={handleSubmit}>Create Request</button>
     </div>
   );
 }

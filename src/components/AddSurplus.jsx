@@ -18,11 +18,20 @@ export default function AddSurplus() {
   };
 
   return (
-    <div>
-      <h3>Add Surplus</h3>
-      <input placeholder="Item" value={item} onChange={e => setItem(e.target.value)} />
-      <input placeholder="Qty" value={quantity} onChange={e => setQuantity(e.target.value)} />
-      <button onClick={handleSubmit}>Add</button>
+    <div className="form-group">
+      <h3>Post Surplus</h3>
+      <input 
+        placeholder="What do you have? (e.g., Bread)" 
+        value={item} 
+        onChange={e => setItem(e.target.value)} 
+      />
+      <input 
+        type="number"
+        placeholder="Quantity (e.g., 5)" 
+        value={quantity} 
+        onChange={e => setQuantity(e.target.value)} 
+      />
+      <button onClick={handleSubmit}>Add to Inventory</button>
     </div>
   );
 }
