@@ -36,6 +36,24 @@ User → React App → Firestore → Cloud Functions → Gemini AI → Firestore
 - 📡 Event-driven backend (Cloud Functions)
 - 🌐 Scalable cloud deployment
 
+## 📊 Future Enhancements
+
+- 📍 Location-based matching (GeoHash)
+- 🔔 Notification system
+- 📈 Analytics dashboard
+- 🧠 Advanced AI optimization
+
+## 🏆 Highlights
+
+- Built using real-time NoSQL database
+- Serverless architecture with Cloud Functions
+- Integrated AI for intelligent decision-making
+- Designed for scalability and real-world impact
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first.
+
 ## 🚀 Installation
 
 ```bash
@@ -70,24 +88,3 @@ firebase deploy
 - Verify real-time updates
 - Check Cloud Function logs for matches
 
-## 📊 Future Enhancements
-
-- 📍 Location-based matching (GeoHash)
-- 🔔 Notification system
-- 📈 Analytics dashboard
-- 🧠 Advanced AI optimization
-
-## 🏆 Highlights
-
-- Built using real-time NoSQL database
-- Serverless architecture with Cloud Functions
-- Integrated AI for intelligent decision-making
-- Designed for scalability and real-world impact
-
-## 🤝 Contributing
-
-Pull requests are welcome. For major changes, please open an issue first.
-
-## 📸 Screenshots
-
-![alt text](image.png)
