@@ -1,31 +1,29 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
 export default function DemandList() {
-  const [data, setData] = useState([]);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "demands"), snapshot => {
-      setData(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    const q = query(collection(db, "demands"), orderBy("createdAt", "desc"));
+    return onSnapshot(q, (snap) => {
+      setItems(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     });
-
-    return () => unsub();
   }, []);
 
   return (
-    <ul className="scroll-list">
-      {data.map(item => (
-        <li key={item.id} className="item-card" style={{ borderLeftColor: "var(--on-surface-variant)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontWeight: 600, fontSize: "1.1rem" }}>{item.item}</span>
-            <span style={{ color: "var(--on-surface-variant)", fontWeight: "bold" }}>{item.quantity} units</span>
+    <div className="space-y-3">
+      {items.length === 0 ? (
+        <p className="text-center py-8 text-on-surface-variant font-medium">No active requests.</p>
+      ) : (
+        items.map(item => (
+          <div key={item.id} className="flex justify-between items-center p-4 bg-white/40 rounded-2xl border border-outline-variant/10 hover:bg-white/60 transition-all">
+            <div className="text-left font-bold text-on-background capitalize">{item.item}</div>
+            <div className="text-secondary font-black">{item.quantity} {item.unit || "Tons"}</div>
           </div>
-          <div style={{ fontSize: "0.8rem", color: "var(--on-surface-variant)", marginTop: "0.5rem" }}>
-            Requested {new Date(item.createdAt).toLocaleTimeString()}
-          </div>
-        </li>
-      ))}
-    </ul>
+        ))
+      )}
+    </div>
   );
 }

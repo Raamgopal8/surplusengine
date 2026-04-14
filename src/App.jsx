@@ -1,40 +1,54 @@
-import AddSurplus from "./components/AddSurplus";
-import AddDemand from "./components/AddDemand";
-import SurplusList from "./components/SurplusList";
-import DemandList from "./components/DemandList";
-import Matches from "./components/Matches";
+import { useState, useEffect } from "react";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { NotificationProvider } from "./context/NotificationContext";
+import Layout from "./components/Layout";
+import Dashboard from "./components/Dashboard";
+import Vault from "./components/Vault";
+import NotificationList from "./components/NotificationList";
+import Login from "./components/Auth/Login";
+import LandingPage from "./components/LandingPage";
+import SurplusPage from "./components/SurplusPage";
+import DemandPage from "./components/DemandPage";
+
+function AppContent() {
+  const { user, loading } = useAuth();
+  const [activeTab, setActiveTab] = useState("landing");
+
+  useEffect(() => {
+    if (user && activeTab === "login") {
+      setActiveTab("dashboard");
+    }
+  }, [user, activeTab]);
+
+  if (loading) return null;
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "landing": return <LandingPage setActiveTab={setActiveTab} />;
+      case "surplus": return <SurplusPage setActiveTab={setActiveTab} />;
+      case "demand": return <DemandPage setActiveTab={setActiveTab} />;
+      case "dashboard": return user ? <Dashboard /> : <Login />;
+      case "vault": return user ? <Vault /> : <Login />;
+      case "notifications": return user ? <NotificationList /> : <Login />;
+      case "login": return <Login />;
+      default: return <LandingPage setActiveTab={setActiveTab} />;
+    }
+  };
+
+  return (
+    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+      {renderContent()}
+    </Layout>
+  );
+}
 
 function App() {
   return (
-    <div className="container">
-      <header style={{ padding: "2rem", textAlign: "center", borderBottom: "1px solid var(--outline)" }}>
-        <h1 style={{ margin: 0 }}>Surplus Engine</h1>
-        <p style={{ color: "var(--on-surface-variant)" }}>Real-time inventory & demand matching</p>
-      </header>
-
-      <main className="dashboard">
-        <section className="column">
-          <div className="glass-card" style={{ padding: "1.5rem", marginBottom: "2rem" }}>
-            <AddSurplus />
-          </div>
-          <h2>Available Surplus</h2>
-          <SurplusList />
-        </section>
-
-        <section className="column">
-          <div className="glass-card" style={{ padding: "1.5rem", marginBottom: "2rem" }}>
-            <AddDemand />
-          </div>
-          <h2>Demand Requests</h2>
-          <DemandList />
-        </section>
-
-        <section className="column">
-          <h2>Live Matches</h2>
-          <Matches />
-        </section>
-      </main>
-    </div>
+    <AuthProvider>
+      <NotificationProvider>
+        <AppContent />
+      </NotificationProvider>
+    </AuthProvider>
   );
 }
 

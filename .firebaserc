@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "focus-mechanic-406414"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
