@@ -8,8 +8,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 3000;
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const port = parseInt(process.env.PORT, 10) || 8080;
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+
+if (!stripeKey) {
+  console.warn('Warning: STRIPE_SECRET_KEY is not defined. Stripe functionality will be limited.');
+}
+
+const stripe = new Stripe(stripeKey || 'dummy_key');
 
 app.use(express.json());
 
@@ -49,6 +55,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${port}`);
 });
