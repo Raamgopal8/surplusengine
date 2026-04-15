@@ -1,6 +1,42 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 export default function LandingPage({ setActiveTab }) {
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const faqs = [
+    {
+      question: "What is the Surplus Engine?",
+      answer: "The Surplus Engine is a cloud-native platform that uses AI and real-time data to instantly match surplus resources — like food, grains, and materials — with active demand across global markets. It eliminates waste by connecting supply and demand the moment they arise.",
+      icon: "hub"
+    },
+    {
+      question: "How does AI-powered matching work?",
+      answer: "When a surplus is listed, Gemini 3 Flash analyzes its attributes (category, quantity, urgency) against live demand entries in Firestore. It identifies the highest-probability matches and surfaces them instantly on your dashboard.",
+      icon: "psychology"
+    },
+    {
+      question: "Is the inventory updated in real-time?",
+      answer: "Yes. We use Firestore's real-time listeners to sync all surplus and demand entries across all connected clients instantly. You'll always see the freshest data — no page refreshes needed.",
+      icon: "sync_alt"
+    },
+    {
+      question: "How do I list a surplus resource?",
+      answer: "Click 'Explore Inventory' to browse available surplus or 'Request Sourcing' to post your demand. After authentication, you'll gain full access to the Operations Hub where you can list, manage, and track your resources.",
+      icon: "add_circle"
+    },
+    {
+      question: "What types of resources can be listed?",
+      answer: "The platform supports a wide range of surplus resources including agricultural produce, grains, packaged goods, raw materials, and industrial inventory. Any resource with a defined quantity and category can be matched.",
+      icon: "inventory_2"
+    },
+    {
+      question: "Is resource quality verified?",
+      answer: "Verified partners carry a '100% Certified' badge. Our system tracks certification details and provider ratings so buyers can make informed decisions before confirming a match.",
+      icon: "verified_user"
+    }
+  ];
+
   return (
     <div className="space-y-32 pb-32">
       {/* Hero Section */}
@@ -102,6 +138,68 @@ export default function LandingPage({ setActiveTab }) {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <section className="px-8 lg:px-16">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <span className="font-label text-xs uppercase tracking-widest text-[#154212] font-black mb-2 block">Knowledge Base</span>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-on-background">Frequently Asked<br />Questions</h2>
+            </div>
+            <p className="text-on-surface-variant max-w-sm text-left pb-2">Everything you need to know about the Surplus Engine — from how matching works to resource verification.</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {faqs.map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08, duration: 0.5 }}
+                className={`premium-card cursor-pointer transition-all duration-300 ${
+                  activeIndex === index
+                    ? "bg-primary/5 !border-primary/20 shadow-lg"
+                    : "hover:border-primary/10"
+                }`}
+                onClick={() => setActiveIndex(activeIndex === index ? null : index)}
+              >
+                <div className="flex items-start gap-4">
+                  <div className={`shrink-0 p-3 rounded-2xl transition-colors duration-300 ${activeIndex === index ? "bg-primary text-white" : "bg-primary/10 text-primary"}`}>
+                    <span className="material-symbols-outlined">{faq.icon}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-center gap-2">
+                      <h4 className="text-base font-bold leading-snug">{faq.question}</h4>
+                      <span className={`material-symbols-outlined shrink-0 text-on-surface/40 transition-transform duration-300 ${activeIndex === index ? "rotate-180" : ""}`}>
+                        expand_more
+                      </span>
+                    </div>
+                    <AnimatePresence initial={false}>
+                      {activeIndex === index && (
+                        <motion.div
+                          key="answer"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          <p className="mt-3 text-on-surface/70 leading-relaxed text-sm">
+                            {faq.answer}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
+
